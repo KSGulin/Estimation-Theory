@@ -6,7 +6,9 @@ def update_step(y, x0, H, R, P0, hx, x0_bar):
 	term3 = np.dot(np.linalg.inv(P0), (x0_bar - x0))
 	return np.squeeze(x0 + np.asarray(np.transpose(np.dot(term1, np.transpose((term2 + term3))))))
 
-def run_to_convergence(y, t, x0, est_inds, R, P0, h_transform, partial_func, e):
+	### Add dhecking function
+
+def run_to_convergence(y, t, x0, est_inds, R, P0, h_transform, partial_func, e, condition_func = None):
 	x0_bar = x0[est_inds]
 	while True:
 		hx = h_transform(x0, t)
@@ -21,6 +23,9 @@ def run_to_convergence(y, t, x0, est_inds, R, P0, h_transform, partial_func, e):
 			else:
 				x1[i] = xt[j]
 				j += 1
+
+		if (condition_func):
+			x1 = condition_func(x1)
 
 		if np.mean(np.abs(x1 - x0)) < e:
 			return x1

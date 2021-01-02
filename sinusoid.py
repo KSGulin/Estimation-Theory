@@ -1,5 +1,7 @@
 import numpy as np
 import warnings
+from math import pi
+
 
 def sinusoid(a, f, p, t0, t1, dt):
 # Generates sinusoid with equally spaced time steps
@@ -32,4 +34,12 @@ def partials(x, t):
 
 	return np.matrix(H)
 
+def check_bounds(x):
+	if x[1] > 50:
+		x[1] = 10 - x[1]
+	if x[2] > 2*pi:
+		x[2] = 4*pi - x[2]
+	if x[2] < 0:
+		x[2] = 2*pi + x[2]
 
+	return x
